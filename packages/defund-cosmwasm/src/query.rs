@@ -1,9 +1,12 @@
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
-use cosmwasm_std::{Coin, Decimal, QueryRequest};
+use cosmwasm_std::{Coin, Decimal, QueryRequest, CustomQuery};
 
 use crate::defund::{Fund, PageRequest};
+
+// implement custom query
+impl CustomQuery for DefundQuery {}
 
 /// DefundQuery is an override of QueryRequest::Custom to access Defund-specific modules
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
@@ -11,13 +14,6 @@ use crate::defund::{Fund, PageRequest};
 pub enum DefundQuery {
     Etf(EtfQuery),
     Broker(BrokerQuery),
-}
-
-// This is a simpler way to making queries
-impl Into<QueryRequest<DefundQuery>> for DefundQuery {
-    fn into(self) -> QueryRequest<DefundQuery> {
-        QueryRequest::Custom(self)
-    }
 }
 
 /// This contains all queries that can be made to the etf module
