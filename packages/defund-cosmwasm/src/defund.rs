@@ -5,11 +5,7 @@ use serde::{Deserialize, Serialize};
 #[serde(rename_all = "snake_case")]
 pub struct PageRequest {
     // base64 string of key
-    key: String,
-    offset: u64,
-    limit: u64,
-    count_total: bool,
-    reverse: bool,
+    pub key: String,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
@@ -20,4 +16,19 @@ pub struct Fund {
     limit: u64,
     count_total: bool,
     reverse: bool,
+}
+
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
+#[serde(rename_all = "snake_case")]
+pub struct Source {
+    pub key: String,
+}
+
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
+#[serde(rename_all = "snake_case")]
+pub struct Broker {
+    id: String,
+    connection_id: String,
+    pools: Vec<Source>,
+    status: String,
 }

@@ -1,9 +1,9 @@
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
-use cosmwasm_std::{Coin, Decimal, QueryRequest, CustomQuery};
+use cosmwasm_std::{Coin, QueryRequest, CustomQuery};
 
-use crate::defund::{Fund, PageRequest};
+use crate::defund::{Fund, Broker, PageRequest};
 
 // implement custom query
 impl CustomQuery for DefundQuery {}
@@ -35,35 +35,32 @@ impl Into<QueryRequest<DefundQuery>> for EtfQuery {
     }
 }
 
-/// GetFundResponse is data format returned from SwapRequest::Simulate query
+/// GetFundResponse is data format returned from GetFund query
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
 pub struct GetFundResponse {
     pub fund: Fund,
 }
 
-/// GetFundsResponse is data format returned from SwapRequest::Simulate query
+/// GetFundsResponse is data format returned from GetFunds query
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
 pub struct GetFundsResponse {
-    pub receive: Coin,
+    pub funds: Vec<Fund>,
 }
 
-/// GetFundPriceResponse is data format returned from SwapRequest::Simulate query
+/// GetFundPriceResponse is data format returned from GetFundPrice query
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
 pub struct GetFundPriceResponse {
     pub receive: Coin,
 }
 
-/// This contains all queries that can be made to the oracle module
+/// This contains all queries that can be made to the broker module
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
 #[serde(rename_all = "snake_case")]
 pub enum BrokerQuery {
-    // ExchangeRate will return the rate between just this pair.
-    ExchangeRate { offer: String, ask: String },
-    // ExchangeRates will return the exchange rate between offer denom and all supported asks
-    ExchangeRates { offer: String },
-    // Return the tobin tax charged on exchanges with this token
-    // (TODO: define if this applies to the offer or the ask?)
-    TobinTax { denom: String },
+    // Get a broker by its id
+    GetBroker { broker: String },
+    // Get all brokers in store
+    GetBrokers { pagination: PageRequest }
 }
 
 // This is a simpler way to making queries
@@ -73,21 +70,14 @@ impl Into<QueryRequest<DefundQuery>> for BrokerQuery {
     }
 }
 
-/// ExchangeRateResponse is data format returned from OracleRequest::ExchangeRate query
+/// GetBrokerResponse is data format returned from GetBroker query
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
-pub struct ExchangeRateResponse {
-    pub ask: String,
-    pub rate: Decimal,
+pub struct GetBrokerResponse {
+    pub broker: Broker,
 }
 
-/// ExchangeRatesResponse is data format returned from OracleRequest::ExchangeRates query
+/// GetBrokersResponse is data format returned from GetBrokers query
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
-pub struct ExchangeRatesResponse {
-    pub rates: Vec<ExchangeRateResponse>,
-}
-
-/// TobinTaxResponse is data format returned from OracleRequest::TobinTax query
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
-pub struct TobinTaxResponse {
-    pub tax: Decimal,
+pub struct GetBrokersResponse {
+    pub brokers: Vec<Broker>,
 }

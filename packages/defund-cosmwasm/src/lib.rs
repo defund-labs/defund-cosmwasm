@@ -3,11 +3,14 @@ mod querier;
 mod query;
 mod defund;
 
-pub use msg::{EtfMsg, DefundMsg};
+pub use msg::{DefundMsg};
 pub use querier::DefundQuerier;
-pub use query::{};
+pub use query::{
+    DefundQuery, GetFundResponse, GetFundsResponse, GetFundPriceResponse,
+    GetBrokerResponse, GetBrokersResponse
+};
 pub use defund::{
-    Fund, PageRequest,
+    Fund, PageRequest, Source, Broker
 };
 
 // This export is added to all contracts that import this package, signifying that they require
