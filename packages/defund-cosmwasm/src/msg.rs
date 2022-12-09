@@ -12,11 +12,11 @@ pub enum DefundMsg {
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
 pub struct Holding {
-    token: String,
-    percent: i64,
-    pool_id: u64,
-    broker_id: String,
-    fund_type: String,
+    pub token: String,
+    pub percent: i64,
+    pub pool_id: u64,
+    pub broker_id: String,
+    pub fund_type: String,
 }
 
 /// EtfMsg captures all possible messages we can use for defund's etf module

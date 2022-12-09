@@ -26,17 +26,16 @@ incremental = false
 overflow-checks = true
 
 [features]
-default = ["cranelift"]
-# for quicker tests, cargo test --lib
 # for more explicit tests, cargo test --features=backtraces
-backtraces = ["cosmwasm-std/backtraces", "cosmwasm-vm/backtraces"]
-cranelift = ["cosmwasm-vm/default-cranelift"]
-singlepass = ["cosmwasm-vm/default-singlepass"]
+backtraces = ["cosmwasm-std/backtraces"]
+# use library feature to disable all instantiate/execute/query exports
+library = []
 
 [dependencies]
-defund-bindings = { path = "../../packages/defund-cosmwasm", version = "0.1.0" }
+defund-cosmwasm = { path = "../../packages/defund-cosmwasm", version = "0.1.0" }
 cosmwasm-std = "1.0.0"
 cosmwasm-storage = "1.0.0"
+cosmwasm-schema = "1.0.0"
 cw-storage-plus = "0.13.2"
 cw2 = "0.13.2"
 schemars = "0.8.8"
@@ -47,6 +46,5 @@ thiserror = { version = "1.0.31" }
 protobuf = { version = "3.2.0", features = ["with-bytes"] }
 
 [dev-dependencies]
-defund-mocks = { path = "../../packages/mocks", version = "0.1.0" }
 cosmwasm-schema = "1.0.0"
 cw-multi-test = "0.14.0"

@@ -3,7 +3,7 @@ mod querier;
 mod query;
 mod defund;
 
-pub use msg::{DefundMsg};
+pub use msg::{DefundMsg, EtfMsg, Holding};
 pub use querier::DefundQuerier;
 pub use query::{
     DefundQuery, GetFundResponse, GetFundsResponse, GetFundPriceResponse,

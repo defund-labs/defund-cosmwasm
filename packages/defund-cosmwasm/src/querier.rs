@@ -15,7 +15,7 @@ impl<'a> DefundQuerier<'a> {
     /*
     query etf module
     */
-    pub fn query_fund<T: Into<String>>(&self, symbol: String) -> StdResult<Fund> {
+    pub fn query_fund(&self, symbol: String) -> StdResult<Fund> {
         let request = EtfQuery::GetFund{ 
             symbol 
         };
@@ -42,14 +42,14 @@ impl<'a> DefundQuerier<'a> {
     /*
     query broker module
     */
-    pub fn query_broker<T: Into<String>>(&self, broker: String) -> StdResult<Broker> {
+    pub fn query_broker(&self, broker: String) -> StdResult<Broker> {
         let request = BrokerQuery::GetBroker { 
             broker
         };
         let res: GetBrokerResponse = self.querier.query(&request.into())?;
         Ok(res.broker)
     }
-    pub fn query_brokers<T: Into<String>>(&self, key: String) -> StdResult<Vec<Broker>> {
+    pub fn query_brokers(&self, key: String) -> StdResult<Vec<Broker>> {
         let request = BrokerQuery::GetBrokers { pagination: PageRequest {
             key,
         } };
