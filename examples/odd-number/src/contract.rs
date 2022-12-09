@@ -15,11 +15,7 @@ pub fn instantiate(
     _env: Env,
     info: MessageInfo,
     msg: InstantiateMsg,
-) -> Result<Response<DefundMsg>, ContractError> {
-    if msg.fund == String::from("") {
-        return Err(ContractError::BlankFund {});
-    }
-
+) -> StdResult<Response<DefundMsg>> {
     let state = State {
         creator: info.sender.clone(),
         owner: info.sender.clone(),
@@ -70,6 +66,15 @@ pub fn execute_runner(
     }
     else{
         // its even so set the holdings to 25% ATOM, 75% OSMO
+        for mut h in fund.holdings {
+            if h.token == "uosmo" {
+                h.percent = 75
+            }
+            if h.token == "uatom" {
+                h.percent = 25
+            }
+            update_holdings.push(h)
+        }
     };
 
     fund.holdings = update_holdings;
@@ -82,6 +87,7 @@ pub fn execute_runner(
             holdings: fund.holdings,
         }))
         .add_attributes([("action", "runner")]);
+    
     Ok(res)
 }
 
@@ -144,7 +150,7 @@ mod tests {
     }
 
     #[test]
-    fn runner() {
+    fn etf_query_works() {
         let mut deps = mock_dependencies(&[]);
 
         let msg = InstantiateMsg {
