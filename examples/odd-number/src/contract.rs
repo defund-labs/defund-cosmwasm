@@ -6,7 +6,7 @@ use crate::error::ContractError;
 use crate::msg::{StateResponse, ExecuteMsg, InstantiateMsg, QueryMsg};
 use crate::state::{State, CONFIG};
 use defund_cosmwasm::{
-    DefundQuerier, Fund, DefundQuery, DefundMsg, EtfMsg, Holding,
+    DefundQuerier, Fund, DefundQuery, DefundMsg, Holding,
 };
 
 #[entry_point]
@@ -82,7 +82,7 @@ pub fn execute_runner(
 
     let res =
         Response::new()
-        .add_submessage(SubMsg::new(EtfMsg::EditFund { 
+        .add_submessage(SubMsg::new(DefundMsg::EditFund { 
             symbol: fund.symbol, 
             holdings: fund.holdings,
         }))

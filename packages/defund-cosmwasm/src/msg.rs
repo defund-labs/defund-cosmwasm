@@ -1,13 +1,16 @@
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
-use cosmwasm_std::{CosmosMsg};
+use cosmwasm_std::{CosmosMsg, CustomMsg};
 
 /// DefundMsg is an override of CosmosMsg::Custom to add support for Defund's custom message types
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
 #[serde(rename_all = "snake_case")]
 pub enum DefundMsg {
-    EditFund(EtfMsg),
+    EditFund {
+        symbol: String,
+        holdings: Vec<Holding>
+    },
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
@@ -19,25 +22,10 @@ pub struct Holding {
     pub fund_type: String,
 }
 
-/// EtfMsg captures all possible messages we can use for defund's etf module
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
-pub enum EtfMsg {
-    EditFund {
-        symbol: String,
-        holdings: Vec<Holding>
-    },
-}
-
-// this is a helper to be able to return these as CosmosMsg easier
-impl Into<CosmosMsg<DefundMsg>> for DefundMsg {
-    fn into(self) -> CosmosMsg<DefundMsg> {
-        CosmosMsg::Custom(self)
+impl From<DefundMsg> for CosmosMsg<DefundMsg> {
+    fn from(msg: DefundMsg) -> CosmosMsg<DefundMsg> {
+        CosmosMsg::Custom(msg)
     }
 }
 
-// and another helper, so we can return DefundMsg::EditFund{..}.into() as a CosmosMsg
-impl Into<CosmosMsg<DefundMsg>> for EtfMsg {
-    fn into(self) -> CosmosMsg<DefundMsg> {
-        CosmosMsg::Custom(DefundMsg::EditFund(self))
-    }
-}
+impl CustomMsg for DefundMsg {}

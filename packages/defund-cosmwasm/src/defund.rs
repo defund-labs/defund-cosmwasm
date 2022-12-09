@@ -8,6 +8,13 @@ use crate::Holding;
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
 #[serde(rename_all = "snake_case")]
+pub enum FundType {
+    PASSIVE,
+    ACTIVE,
+}
+
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
+#[serde(rename_all = "snake_case")]
 pub struct PageRequest {
     // base64 string of key
     pub key: String,
@@ -41,7 +48,9 @@ pub struct Fund {
     pub creator: String,
     pub rebalancing: bool,
     pub last_rebalance_height: i64,
-    pub balances: HashMap<String, Balances>
+    pub balances: HashMap<String, Balances>,
+    pub fund_type: FundType,
+    pub contract: String,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
