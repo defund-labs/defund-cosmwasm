@@ -6,7 +6,7 @@ mod defund;
 pub use msg::{DefundMsg, Holding};
 pub use querier::DefundQuerier;
 pub use query::{
-    DefundQuery, GetFundResponse, GetFundsResponse, GetFundPriceResponse,
+    DefundQueryWrapper, DefundQuery, GetFundResponse, GetFundsResponse, GetFundPriceResponse,
     GetBrokerResponse, GetBrokersResponse
 };
 pub use defund::{

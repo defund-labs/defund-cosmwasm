@@ -6,12 +6,12 @@ use crate::error::ContractError;
 use crate::msg::{StateResponse, ExecuteMsg, InstantiateMsg, QueryMsg};
 use crate::state::{State, CONFIG};
 use defund_cosmwasm::{
-    DefundQuerier, Fund, DefundQuery, DefundMsg, Holding,
+    DefundQuerier, Fund, DefundQueryWrapper, DefundMsg, Holding,
 };
 
 #[entry_point]
 pub fn instantiate(
-    deps: DepsMut<DefundQuery>,
+    deps: DepsMut<DefundQueryWrapper>,
     _env: Env,
     info: MessageInfo,
     msg: InstantiateMsg,
@@ -29,7 +29,7 @@ pub fn instantiate(
 
 #[entry_point]
 pub fn execute(
-    deps: DepsMut<DefundQuery>,
+    deps: DepsMut<DefundQueryWrapper>,
     env: Env,
     info: MessageInfo,
     msg: ExecuteMsg,
@@ -40,7 +40,7 @@ pub fn execute(
 }
 
 pub fn execute_runner(
-    deps: DepsMut<DefundQuery>,
+    deps: DepsMut<DefundQueryWrapper>,
     _env: Env,
     _info: MessageInfo,
 ) -> Result<Response<DefundMsg>, ContractError> {
@@ -92,13 +92,13 @@ pub fn execute_runner(
 }
 
 #[entry_point]
-pub fn query(deps: Deps<DefundQuery>, _env: Env, msg: QueryMsg) -> StdResult<Binary> {
+pub fn query(deps: Deps<DefundQueryWrapper>, _env: Env, msg: QueryMsg) -> StdResult<Binary> {
     match msg {
         QueryMsg::State {} => to_binary(&query_state(deps)?),
     }
 }
 
-fn query_state(deps: Deps<DefundQuery>) -> StdResult<StateResponse> {
+fn query_state(deps: Deps<DefundQueryWrapper>) -> StdResult<StateResponse> {
     let state = CONFIG.load(deps.storage)?;
     Ok(state)
 }
@@ -115,8 +115,8 @@ mod tests {
     // influenced by Osmosis bindings. Thank you Osmosis!
     pub fn mock_dependencies(
         contract_balance: &[Coin],
-    ) -> OwnedDeps<MockStorage, MockApi, MockQuerier<DefundQuery>, DefundQuery> {
-        let custom_querier: MockQuerier<DefundQuery> =
+    ) -> OwnedDeps<MockStorage, MockApi, MockQuerier<DefundQueryWrapper>, DefundQueryWrapper> {
+        let custom_querier: MockQuerier<DefundQueryWrapper> =
             MockQuerier::new(&[(MOCK_CONTRACT_ADDR, contract_balance)]).with_custom_handler(|_| {
                 SystemResult::Err(SystemError::InvalidRequest {
                     error: "not implemented".to_string(),
