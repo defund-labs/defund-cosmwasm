@@ -19,7 +19,7 @@ pub struct Holding {
     pub percent: i64,
     pub pool_id: u64,
     pub broker_id: String,
-    pub fund_type: String,
+    pub asset_type: String,
 }
 
 impl From<DefundMsg> for CosmosMsg<DefundMsg> {

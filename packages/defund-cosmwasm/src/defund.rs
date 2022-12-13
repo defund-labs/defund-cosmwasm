@@ -3,15 +3,15 @@ use std::collections::HashMap;
 use cosmwasm_std::Coin;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
-use serde_repr::{Serialize_repr, Deserialize_repr};
+use serde_repr::{Deserialize_repr, Serialize_repr};
 
 use crate::Holding;
 
 #[derive(Serialize_repr, Deserialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash, JsonSchema)]
-#[repr(u8)]
+#[repr(i32)]
 pub enum FundType {
-    Passive = 1,
-    Active = 2
+    Passive = 0,
+    Active = 1
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
@@ -47,9 +47,9 @@ pub struct Fund {
     pub base_denom: BaseDenom,
     pub starting_price: Coin,
     pub creator: String,
-    pub rebalancing: bool,
+    pub rebalancing: Option<bool>,
     pub last_rebalance_height: i64,
-    pub balances: HashMap<String, Balances>,
+    pub balances: Option<HashMap<String, Balances>>,
     pub fund_type: FundType,
     pub contract: String,
 }
