@@ -1,6 +1,6 @@
-use cosmwasm_std::{QuerierWrapper, StdResult, Coin};
+use cosmwasm_std::{QuerierWrapper, StdResult};
 
-use crate::{query::{GetFundResponse, DefundQuery, GetFundsResponse, GetBrokerResponse, GetBrokersResponse, DefundQueryWrapper, DefundRoute}, defund::{Broker, Fund, PageRequest}};
+use crate::{query::{GetFundResponse, DefundQuery, GetFundsResponse, GetBrokerResponse, GetBrokersResponse, DefundQueryWrapper, DefundRoute}, defund::{PageRequest}, GetFundPriceResponse};
 
 /// This is a helper wrapper to easily use our custom queries
 pub struct DefundQuerier<'a> {
@@ -15,16 +15,15 @@ impl<'a> DefundQuerier<'a> {
     /*
     query etf module
     */
-    pub fn query_fund(&self, symbol: String) -> StdResult<Fund> {
+    pub fn query_fund(&self, symbol: String) -> StdResult<GetFundResponse> {
         let request = DefundQueryWrapper {
             route: DefundRoute::Etf,             
             query_data: DefundQuery::GetFund { symbol } 
         };
-        let res: GetFundResponse = self.querier.query(&request.into())?;
-        Ok(res.fund)
+        self.querier.query(&request.into())
     }
 
-    pub fn query_funds(&self, key: String) -> StdResult<Vec<Fund>> {
+    pub fn query_funds(&self, key: String) -> StdResult<GetFundsResponse> {
         let request = DefundQueryWrapper {
             route: DefundRoute::Etf,             
             query_data: DefundQuery::GetFunds { 
@@ -34,11 +33,10 @@ impl<'a> DefundQuerier<'a> {
             }
         };
 
-        let res: GetFundsResponse = self.querier.query(&request.into())?;
-        Ok(res.funds)
+        self.querier.query(&request.into())
     }
 
-    pub fn query_fund_price(&self, symbol: String) -> StdResult<Coin> {
+    pub fn query_fund_price(&self, symbol: String) -> StdResult<GetFundPriceResponse> {
         let request = DefundQueryWrapper {
             route: DefundRoute::Etf,             
             query_data: DefundQuery::GetFundPrice { 
@@ -51,17 +49,16 @@ impl<'a> DefundQuerier<'a> {
     /*
     query broker module
     */
-    pub fn query_broker(&self, broker: String) -> StdResult<Broker> {
+    pub fn query_broker(&self, broker: String) -> StdResult<GetBrokerResponse> {
         let request = DefundQueryWrapper {
             route: DefundRoute::Broker,             
             query_data: DefundQuery::GetBroker { 
                 broker 
             }
         };
-        let res: GetBrokerResponse = self.querier.query(&request.into())?;
-        Ok(res.broker)
+        self.querier.query(&request.into())
     }
-    pub fn query_brokers(&self, key: String) -> StdResult<Vec<Broker>> {
+    pub fn query_brokers(&self, key: String) -> StdResult<GetBrokersResponse> {
         let request = DefundQueryWrapper {
             route: DefundRoute::Broker,             
             query_data: DefundQuery::GetBrokers { 
@@ -70,7 +67,6 @@ impl<'a> DefundQuerier<'a> {
                 } 
             }
         };
-        let res: GetBrokersResponse = self.querier.query(&request.into())?;
-        Ok(res.brokers)
+        self.querier.query(&request.into())
     }
 }
