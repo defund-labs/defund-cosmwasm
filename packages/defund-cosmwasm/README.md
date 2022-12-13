@@ -7,7 +7,7 @@ This is a crate for building dETFs on Defund with Cosmwasm. Add this crate to yo
 Add the crate dependency to your `Cargo.toml` file within your smart contract
 ```toml
 [dependencies]
-defund-cosmwasm = { version = "0.1.1" }
+defund-cosmwasm = { version = "0.1.2" }
 ```
 
 ## Query
