@@ -165,9 +165,9 @@ mod tests {
 
     #[test]
     fn etf_deserialize_fund_json() {
-        let data = r#"{"symbol":"test2", "name":"Test 2", "description": "Test 2", "fund_type": 1, "address":"defund142hzmnzek9ug3f5yj4fu6y3j463xvsh3hfkj7lpr5pt4ws790fpstfwdk7","shares":{"denom":"etf/test2","amount":"0"},"holdings":[{"token":"ibc/27394FB092D2ECCD56123C74F36E4C1F926001CEADA9CA97EA622B25F41E5EB2","percent":75,"pool_id":1,"broker_id":"osmosis","asset_type":"spot"},{"token":"uosmo","percent":25,"pool_id":1,"broker_id":"osmosis","asset_type":"spot"}],"rebalance":10, "rebalancing": false,"base_denom":{"on_defund":"ibc/ED07A3391A112B175915CD8FAF43A2DA8E4790EDE12566649D0C2F97716B8518","on_broker":"uosmo"},"starting_price":{"denom":"uosmo","amount":"10000000"},"creator":"A","last_rebalance_height":0,"contract":"defund14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9s7k38kk"}"#;
+        let data = r#"{"fund":{"symbol":"test2","address":"defund142hzmnzek9ug3f5yj4fu6y3j463xvsh3hfkj7lpr5pt4ws790fpstfwdk7","name":"Test 2","description":"Test 2","shares":{"denom":"etf/test2","amount":"0"},"holdings":[{"token":"ibc/27394FB092D2ECCD56123C74F36E4C1F926001CEADA9CA97EA622B25F41E5EB2","percent":75,"pool_id":1,"broker_id":"osmosis","asset_type":"spot"},{"token":"uosmo","percent":25,"pool_id":1,"broker_id":"osmosis","asset_type":"spot"}],"rebalance":10,"base_denom":{"on_defund":"ibc/ED07A3391A112B175915CD8FAF43A2DA8E4790EDE12566649D0C2F97716B8518","on_broker":"uosmo"},"starting_price":{"denom":"uosmo","amount":"10000000"},"creator":"defund1c23egjxk85ufn46fv4phep44452c4uw7hkc70l","last_rebalance_height":0,"balances":{"osmosis":{}},"fund_type":1,"contract":"defund14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9s7k38kk"}}"#;
         println!("{}", data);
-        let p: Fund = serde_json::from_str(&data).unwrap();
-        println!("{:#?}", p.symbol);
+        let p: GetFundResponse = serde_json_wasm::from_str(&data).unwrap();
+        println!("{:#?}", p.fund);
     }
 }

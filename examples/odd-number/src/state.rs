@@ -1,9 +1,10 @@
-use cosmwasm_schema::cw_serde;
-
+use schemars::JsonSchema;
+use serde::{Deserialize, Serialize};
 use cosmwasm_std::{Addr};
 use cw_storage_plus::Item;
 
-#[cw_serde]
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
+#[serde(rename_all = "snake_case")]
 pub struct State {
     pub creator: Addr,
     pub owner: Addr,

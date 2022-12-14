@@ -1,5 +1,3 @@
-use std::collections::HashMap;
-
 use cosmwasm_std::Coin;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
@@ -31,7 +29,14 @@ pub struct BaseDenom {
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
 #[serde(rename_all = "snake_case")]
 pub struct Balances {
-    pub balances: Vec<Coin>,
+    pub address: Option<String>,
+    pub balances: Option<Vec<Coin>>,
+}
+
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
+#[serde(rename_all = "snake_case")]
+pub struct FundBalances {
+    pub osmosis: Option<Balances>,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
@@ -49,7 +54,7 @@ pub struct Fund {
     pub creator: String,
     pub rebalancing: Option<bool>,
     pub last_rebalance_height: i64,
-    pub balances: Option<HashMap<String, Balances>>,
+    pub balances: FundBalances,
     pub fund_type: FundType,
     pub contract: String,
 }
