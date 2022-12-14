@@ -52,7 +52,7 @@ pub fn execute_runner(
 
     // query for fund info
     let res: GetFundResponse = querier.query_fund(state.clone().fund)?;
-    let mut fund: Fund = res.clone().fund;
+    let fund: Fund = res.clone().fund;
 
     // check if the current block is an odd number or even number
     if let 0=_env.block.height%2{
@@ -61,7 +61,7 @@ pub fn execute_runner(
             if h.token == "uosmo" {
                 h.percent = 25
             }
-            if h.token == "uatom" {
+            if h.token == "ibc/27394FB092D2ECCD56123C74F36E4C1F926001CEADA9CA97EA622B25F41E5EB2" {
                 h.percent = 75
             }
             update_holdings.push(h)
@@ -73,21 +73,20 @@ pub fn execute_runner(
             if h.token == "uosmo" {
                 h.percent = 75
             }
-            if h.token == "uatom" {
+            if h.token == "ibc/27394FB092D2ECCD56123C74F36E4C1F926001CEADA9CA97EA622B25F41E5EB2" {
                 h.percent = 25
             }
             update_holdings.push(h)
         }
     };
 
-    fund.holdings = update_holdings;
     CONFIG.save(deps.storage, &state)?;
 
     let res =
         Response::new()
         .add_message(DefundMsg::EditFund { 
             symbol: fund.symbol, 
-            holdings: fund.holdings,
+            holdings: update_holdings,
         });
     
     Ok(res)
