@@ -3,7 +3,7 @@
 This is the home of all the bindings for Cosmwasm for dETF builders to integrate Defund's native chain logic into their smart contracts. This repo also contains example contracts to be used for testing and as examples for getting a feel for Defund smart contracting.
 
 ## Rebalancing
-Defund will automatically runner your code at each rebalance period through the `Runner` entrypoint like so.
+Defund will automatically run your code at each rebalance period through the `Runner` entrypoint like so. This is where the grunt work for an active Cosmwasm dETF is.
 ```rust
 #[entry_point]
 pub fn execute(
